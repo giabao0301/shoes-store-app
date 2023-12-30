@@ -1,9 +1,16 @@
 import React, {useState} from 'react';
-import {View, TouchableOpacity, TextInput, Image, FlatList} from 'react-native';
+import {
+  View,
+  TouchableOpacity,
+  TextInput,
+  Image,
+  FlatList,
+  Keyboard,
+  Pressable,
+} from 'react-native';
 import {COLORS, SIZES} from '../../constants/index';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import styles from './searchInput.style';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import axios from 'axios';
 import SearchedItem from '../products/SearchedItem';
 
@@ -11,16 +18,19 @@ const SearchInput = props => {
   const [searchKey, setSearchKey] = useState('');
   const [searchResults, setSearchResults] = useState([]);
 
-  const searchHandler = () => {
+  const searchHandler = async () => {
     try {
-      const response = axios.get(
-        `http://localhost:3001/api/products/search/${searchKey}`,
+      setSearchResults([]);
+      const response = await axios.get(
+        `http://172.17.28.120:3000/api/products/search/${searchKey}`,
       );
-
-      setSearchResults(response.data);
+      const data = await response.data;
+      setSearchResults(data);
     } catch (error) {
       console.log('No item found!');
+      setSearchResults([]);
     }
+    Keyboard.dismiss();
   };
 
   return (
@@ -31,11 +41,10 @@ const SearchInput = props => {
             style={styles.searchInput}
             value={searchKey}
             onChangeText={text => setSearchKey(text)}
-            onPressIn={() => {}}
             placeholder="Search for..."
-            placeholderTextColor={COLORS.gray}
+            placeholderTextColor={COLORS.black}
+            color={COLORS.black}
             autoFocus={true}
-            onBlur={props.onBlur}
           />
         </View>
         <TouchableOpacity style={styles.searchBtn} onPress={searchHandler}>
@@ -47,15 +56,15 @@ const SearchInput = props => {
           data={searchResults}
           keyExtractor={item => item._id}
           renderItem={({item}) => <SearchedItem item={item} />}
-          style={{marginHorizontal: 12}}
+          style={styles.searchedItemList}
         />
       ) : (
-        <View style={{flex: 1}}>
+        <Pressable style={{flex: 1}}>
           <Image
             source={require('../../../assets/images/Pose23.png')}
             style={styles.searchImage}
           />
-        </View>
+        </Pressable>
       )}
     </View>
   );

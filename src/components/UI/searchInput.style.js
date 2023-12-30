@@ -14,12 +14,12 @@ const styles = StyleSheet.create({
   searchWrapper: {
     flex: 1,
     backgroundColor: COLORS.secondary,
-    marginRight: SIZES.small,
   },
   searchInput: {
     fontFamily: 'Popins-Regular',
     width: '100%',
     paddingHorizontal: SIZES.large,
+    backgroundColor: COLORS.white,
   },
   searchBtn: {
     backgroundColor: COLORS.primary,
@@ -34,6 +34,9 @@ const styles = StyleSheet.create({
     width: SIZES.width - 100,
     height: SIZES.height - 300,
     opacity: 0.9,
+  },
+  searchedItemList: {
+    marginHorizontal: 12,
   },
 });
 

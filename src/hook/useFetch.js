@@ -10,10 +10,11 @@ const useFetch = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch('http://172.17.28.174:3001/api/products/');
-      if (!response.ok) throw new Error('Something went wrong!');
-      const data = await response.json();
-      setData(data);
+      const response = await axios.get(
+        'http://172.17.28.120:3000/api/products/',
+      );
+      if (response.status !== 200) throw new Error('Something went wrong!');
+      setData(response.data);
       setIsLoading(false);
     } catch (error) {
       setError(error.message);

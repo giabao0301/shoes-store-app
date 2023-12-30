@@ -23,11 +23,11 @@ const styles = StyleSheet.create({
   },
 
   details: {
-    marginTop: -SIZES.large,
+    marginTop: -SIZES.xxLarge,
     backgroundColor: COLORS.tertiary,
     width: SIZES.width,
-    borderTopLeftRadius: SIZES.xLarge,
-    borderTopRightRadius: SIZES.xLarge,
+    borderTopLeftRadius: SIZES.xxLarge,
+    borderTopRightRadius: SIZES.xxLarge,
   },
   titleRow: {
     marginHorizontal: 20,
