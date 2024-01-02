@@ -6,7 +6,10 @@ import styles from './productList.style';
 import useFetch from '../../hook/useFetch';
 
 const ProductList = props => {
-  const {data, isLoading, error} = useFetch();
+  const {data, isLoading, error} = useFetch(
+    'http:/172.17.28.120:3000/api/products/',
+    'get',
+  );
 
   let products;
   if (props.selectedCategory === 'All') {

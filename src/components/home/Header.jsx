@@ -11,8 +11,9 @@ const Header = props => {
     <View style={styles.container}>
       <View>
         <Text style={styles.welcomeText}>Welcome back!</Text>
-        <Text style={styles.username}>Bao</Text>
+        <Text style={styles.username}>{props.username}</Text>
       </View>
+
       <View style={styles.icon}>
         <FontAwesome6
           name="magnifying-glass"

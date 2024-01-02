@@ -14,6 +14,7 @@ const ProductImages = ({images}) => {
 };
 
 export default React.memo(ProductImages);
+
 const styles = StyleSheet.create({
   image: {
     aspectRatio: 1,

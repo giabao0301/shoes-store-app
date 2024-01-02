@@ -6,72 +6,52 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  Alert,
 } from 'react-native';
 import BackButton from '../components/UI/BackButton';
 import PrimaryButton from '../components/UI/PrimaryButton';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import styles from './login.style';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {COLORS} from '../constants';
-import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import styles from './signUp.style';
 import {useNavigation} from '@react-navigation/native';
+import axios from 'axios';
 
 const LoginSchema = Yup.object().shape({
   password: Yup.string()
     .min(8, 'Password must be 8 characters long')
-
     .required('Required'),
   email: Yup.string()
     .email('Provide a valid email address')
     .required('Required'),
+  username: Yup.string()
+    .min(3, 'Username must be 3 characters long')
+    .required('Required'),
+  location: Yup.string()
+    .min(3, 'Location must be 3 characters long')
+    .required('Required'),
 });
 
-const Login = () => {
+const SignUp = () => {
   const navigation = useNavigation();
   const [loader, setLoader] = useState(false);
   const [responseData, setResponseData] = useState(null);
   const [obsecureText, setObsecureText] = useState(true);
 
-  const login = async values => {
+  const registerUser = async values => {
+    setLoader(true);
     try {
-      const endpoint = 'http://172.17.28.120:3000/api/login';
+      const endpoint = 'http://172.17.28.120:3000/api/register';
       const data = values;
-
       const response = await axios.post(endpoint, data);
-      if (response.status === 200) {
-        setLoader(true);
-        setResponseData(response.data);
-        await AsyncStorage.setItem(
-          `user${response.data._id}`,
-          JSON.stringify(response.data),
-        );
 
-        await AsyncStorage.setItem('id', JSON.stringify(response.data._id));
-        navigation.replace('Bottom Tab Navigation');
-      } else {
-        Alert.alert(
-          'Error Logging in',
-          'Please check your email and password',
-          [
-            {
-              text: 'OK',
-              onPress: () => console.log('OK Pressed'),
-            },
-          ],
-        );
+      if (response.status === 201) {
+        setLoader(false);
+        setResponseData(response.data);
+        navigation.navigate('Log in');
       }
     } catch (error) {
-      Alert.alert('Error Logging in', 'Please check your email and password', [
-        {
-          text: 'OK',
-          onPress: () => console.log('OK Pressed'),
-        },
-      ]);
-    } finally {
-      setLoader(false);
+      console.log('Error registering the user', error);
     }
   };
 
@@ -83,9 +63,9 @@ const Login = () => {
       <Text style={styles.title}>Get your dream shoes</Text>
 
       <Formik
-        initialValues={{email: '', password: ''}}
+        initialValues={{email: '', password: '', location: '', username: ''}}
         validationSchema={LoginSchema}
-        onSubmit={values => login(values)}>
+        onSubmit={values => registerUser(values)}>
         {({
           handleChange,
           handleBlur,
@@ -98,6 +78,30 @@ const Login = () => {
         }) => (
           <View>
             <View style={styles.inputContainer}>
+              <Text style={styles.label}>User name</Text>
+              <View
+                style={styles.inputWrapper(
+                  touched.username ? COLORS.gray2 : COLORS.offwhite,
+                )}>
+                <FontAwesome6
+                  name="user"
+                  size={20}
+                  color={COLORS.gray}
+                  style={{marginRight: 10}}
+                />
+                <TextInput
+                  placeholder="Enter user name"
+                  placeholderTextColor={COLORS.gray}
+                  onFocus={() => setFieldTouched('username')}
+                  onBlur={() => setFieldTouched('username', '')}
+                  value={values.username}
+                  onChangeText={handleChange('username')}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  style={styles.input}
+                />
+              </View>
+
               <Text style={styles.label}>Email</Text>
               <View
                 style={styles.inputWrapper(
@@ -124,6 +128,34 @@ const Login = () => {
 
               {touched.email && errors.email && (
                 <Text style={styles.errorText}>{errors.email}</Text>
+              )}
+
+              <Text style={styles.label}>Location</Text>
+              <View
+                style={styles.inputWrapper(
+                  touched.location ? COLORS.gray2 : COLORS.offwhite,
+                )}>
+                <FontAwesome6
+                  name="location-crosshairs"
+                  size={20}
+                  color={COLORS.gray}
+                  style={{marginRight: 10}}
+                />
+                <TextInput
+                  placeholder="Enter location"
+                  placeholderTextColor={COLORS.gray}
+                  onFocus={() => setFieldTouched('location')}
+                  onBlur={() => setFieldTouched('location', '')}
+                  value={values.location}
+                  onChangeText={handleChange('location')}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  style={styles.input}
+                />
+              </View>
+
+              {touched.location && errors.location && (
+                <Text style={styles.errorText}>{errors.location}</Text>
               )}
 
               <Text style={styles.label}>Password</Text>
@@ -169,16 +201,16 @@ const Login = () => {
 
             <PrimaryButton
               loader={loader}
-              title={'LOG IN'}
+              title={'SIGN UP'}
               isValid={isValid}
               onPress={handleSubmit}
             />
 
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('Sign Up');
+                navigation.navigate('Log in');
               }}>
-              <Text style={styles.registerButton}>Register</Text>
+              <Text style={styles.registerButton}>Login</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -187,4 +219,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;

@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
   },
   loginButtonText: {
     fontFamily: 'Poppins-Bold',
+    fontSize: SIZES.medium,
     color: COLORS.white,
   },
 });

@@ -3,7 +3,14 @@ import {StatusBar} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import BottomTabNavigation from './src/navigation/BottomTabNavigation';
-import {Search, ProductDetails, Login} from './src/screens/index';
+import {
+  Search,
+  ProductDetails,
+  Login,
+  Orders,
+  SignUp,
+} from './src/screens/index';
+import {CartProvider} from './src/context/cart-context';
 
 const Stack = createNativeStackNavigator();
 const App = () => {
@@ -27,8 +34,18 @@ const App = () => {
           options={{headerShown: false}}
         />
         <Stack.Screen
-          name="Login"
+          name="Log in"
           component={Login}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Sign Up"
+          component={SignUp}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Orders"
+          component={Orders}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

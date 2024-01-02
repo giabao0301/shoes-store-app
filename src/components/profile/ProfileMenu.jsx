@@ -32,7 +32,13 @@ const ProfileMenu = () => {
           navigaiton.navigate('Wishlist');
         }}
       />
-      <ProfileItem icon="truck-fast" title="Orders" />
+      <ProfileItem
+        icon="truck-fast"
+        title="Orders"
+        onPress={() => {
+          navigaiton.navigate('Orders');
+        }}
+      />
       <ProfileItem
         icon="cart-shopping"
         title="Cart"

@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import axios from 'axios';
 
-const useFetch = () => {
+const useFetch = (url, method) => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -10,9 +10,7 @@ const useFetch = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await axios.get(
-        'http://172.17.28.120:3000/api/products/',
-      );
+      const response = await axios[method](url);
       if (response.status !== 200) throw new Error('Something went wrong!');
       setData(response.data);
       setIsLoading(false);
