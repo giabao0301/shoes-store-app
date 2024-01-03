@@ -9,47 +9,61 @@ import {
   Login,
   Orders,
   SignUp,
+  Checkout,
+  SuccessfulOrder,
 } from './src/screens/index';
-import {CartProvider} from './src/context/cart-context';
+import CartProvider from './src/context/CartProvider';
 
 const Stack = createNativeStackNavigator();
 const App = () => {
   return (
-    <NavigationContainer>
-      <StatusBar hidden />
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Bottom Tab Navigation"
-          component={BottomTabNavigation}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="Search"
-          component={Search}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="Product Details"
-          component={ProductDetails}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="Log in"
-          component={Login}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="Sign Up"
-          component={SignUp}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="Orders"
-          component={Orders}
-          options={{headerShown: false}}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <CartProvider>
+      <NavigationContainer>
+        <StatusBar hidden />
+        <Stack.Navigator>
+          <Stack.Screen
+            name="Bottom Tab Navigation"
+            component={BottomTabNavigation}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Search"
+            component={Search}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Product Details"
+            component={ProductDetails}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Log in"
+            component={Login}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Sign Up"
+            component={SignUp}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Checkout"
+            component={Checkout}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Successful Order"
+            component={SuccessfulOrder}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Orders"
+            component={Orders}
+            options={{headerShown: false}}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </CartProvider>
   );
 };
 

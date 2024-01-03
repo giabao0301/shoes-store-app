@@ -84,10 +84,10 @@ const styles = StyleSheet.create({
     padding: SIZES.xLarge,
   },
   buttonText: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: 'Poppins-Bold',
     color: COLORS.white,
     textAlign: 'center',
-    fontSize: SIZES.medium,
+    fontSize: SIZES.large,
   },
   button: {
     width: '80%',

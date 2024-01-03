@@ -7,6 +7,8 @@ import Login from './Login';
 import Search from './Search';
 import Orders from './Orders';
 import SignUp from './SignUp';
+import Checkout from './Checkout';
+import SuccessfulOrder from './SuccessfulOrder';
 
 export {
   Home,
@@ -18,4 +20,6 @@ export {
   Search,
   Orders,
   SignUp,
+  Checkout,
+  SuccessfulOrder,
 };

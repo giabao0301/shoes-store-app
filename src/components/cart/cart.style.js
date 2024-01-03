@@ -12,6 +12,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 40,
   },
+  list: {
+    marginBottom: 150,
+  },
   bottomBar: {
     position: 'absolute',
     bottom: 60,

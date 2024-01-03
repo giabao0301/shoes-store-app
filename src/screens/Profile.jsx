@@ -75,7 +75,7 @@ const Profile = () => {
             {userLogin ? userData.username : 'Please login into your account'}
           </Text>
 
-          {userLogin && <ProfileMenu />}
+          {userLogin && <ProfileMenu onLogout={userLogout} />}
 
           <TouchableOpacity onPress={userLogin ? logoutHandler : loginHandler}>
             <View style={styles.loginButton}>

@@ -4,22 +4,75 @@ import styles from './cartItem.style';
 import {useNavigation} from '@react-navigation/native';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import {COLORS} from '../../constants';
+import useCartContext from '../../context/cart-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 const CartItem = ({item, onSaveTotal}) => {
   const navigation = useNavigation();
   const [quantity, setQuantity] = useState(item.quantity);
-  const [total, setTotal] = useState(item.cartItem.price * quantity);
+  const {addItem, removeItem} = useCartContext();
 
-  useEffect(() => {
-    setTotal(item.cartItem.price * quantity);
-    onSaveTotal(total);
-  }, [quantity, total]);
+  const increaseQuantityHandler = async () => {
+    const id = await AsyncStorage.getItem('id');
+    const userId = JSON.parse(id);
+    try {
+      const endpoint = 'http://172.17.28.120:3000/api/cart';
 
-  const increaseQuantityHandler = () => {
+      const data = {
+        cartItem: item.cartItem._id,
+        quantity: 1,
+        userId: userId,
+        size: item.size,
+      };
+
+      const response = await axios.post(endpoint, data);
+
+      if (response.status === 200) {
+        console.log('Increased');
+      } else {
+        throw new Error('Error adding to cart');
+      }
+    } catch (error) {
+      console.log('Error adding to cart', error);
+    }
+    addItem({...item, quantity: 1});
     setQuantity(prevQuantity => prevQuantity + 1);
   };
-  const decreaseQuantityHandler = () => {
-    quantity > 1 && setQuantity(prevQuantity => prevQuantity - 1);
+  const decreaseQuantityHandler = async () => {
+    if (quantity > 1) {
+      const id = await AsyncStorage.getItem('id');
+      const userId = JSON.parse(id);
+      try {
+        const endpoint = `http://172.17.28.120:3000/api/cart/quantity`;
+        const data = {
+          userId: userId,
+          cartItem: item.cartItem._id,
+        };
+        const response = await axios.post(endpoint, data);
+        if (response.status === 200) {
+          console.log(response.data);
+        } else {
+          throw new Error('Error fetching cart items');
+        }
+      } catch (error) {
+        console.log('Error fetching cart items', error);
+      }
+      quantity > 1 && setQuantity(prevQuantity => prevQuantity - 1);
+    } else {
+      try {
+        const endpoint = `http://172.17.28.120:3000/api/cart/${item._id}`;
+        const response = await axios.delete(endpoint);
+        if (response.status === 200) {
+          console.log(response.data);
+        } else {
+          throw new Error('Error fetching cart items');
+        }
+      } catch (error) {
+        console.log('Error fetching cart items', error);
+      }
+    }
+    removeItem(item._id);
   };
   return (
     <TouchableOpacity
@@ -43,7 +96,7 @@ const CartItem = ({item, onSaveTotal}) => {
             style={styles.button}>
             <FontAwesome6 name="minus" size={16} color={COLORS.black} />
           </TouchableOpacity>
-          <Text style={styles.quantityNumber}>{quantity}</Text>
+          <Text style={styles.quantityNumber}>{item.quantity}</Text>
           <TouchableOpacity
             onPress={increaseQuantityHandler}
             style={styles.button}>
